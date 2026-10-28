@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HR Logger</title>
+<meta name="theme-color" content="#0e1013">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+  <h1>HR Logger <small>Polar H10</small></h1>
+  <div class="conn">
+    <span id="conn" class="pill off">Déconnecté</span>
+    <span id="batt" class="mute"></span>
+    <button id="btn-connect" class="btn primary">Connecter le H10</button>
+    <button id="btn-disconnect" class="btn" hidden>Déconnecter</button>
+  </div>
+</header>
+
+<div id="banner" class="banner" hidden></div>
+
+<main>
+  <div class="top">
+    <section class="card live">
+      <div class="hr"><span id="hr">--</span><small>bpm</small></div>
+      <div id="contact" class="warn-text"></div>
+      <div id="timer" class="timer">00:00:00</div>
+      <dl class="stats">
+        <div><dt>Moy</dt><dd id="st-avg">--</dd></div>
+        <div><dt>Max</dt><dd id="st-max">--</dd></div>
+        <div><dt>Min</dt><dd id="st-min">--</dd></div>
+      </dl>
+    </section>
+
+    <section class="card controls">
+      <input id="session-name" type="text" placeholder="Nom de la séance (optionnel)" autocomplete="off">
+      <button id="btn-start" class="btn big ok" disabled>Démarrer l'enregistrement</button>
+      <button id="btn-stop" class="btn big danger" hidden>Arrêter l'enregistrement</button>
+      <button id="btn-marker" class="btn big marker" disabled>＋ Marqueur <kbd>M</kbd></button>
+      <form id="marker-form" hidden>
+        <label id="marker-label" for="marker-comment"></label>
+        <div class="row">
+          <input id="marker-comment" type="text" placeholder="Commentaire (Entrée pour valider, Échap pour ignorer)" autocomplete="off">
+          <button class="btn primary" type="submit">OK</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <section class="card">
+    <div class="chart-head">
+      <h2 id="chart-title">Graphique</h2>
+      <div class="row">
+        <select id="window" aria-label="Fenêtre d'affichage">
+          <option value="2">2 min</option>
+          <option value="5" selected>5 min</option>
+          <option value="10">10 min</option>
+          <option value="0">Tout</option>
+        </select>
+        <button id="btn-live" class="btn" hidden>Fermer la revue</button>
+      </div>
+    </div>
+    <canvas id="chart"></canvas>
+  </section>
+
+  <section class="card">
+    <h2>Marqueurs</h2>
+    <p id="markers-empty" class="mute">Aucun marqueur.</p>
+    <ol id="markers" class="markers"></ol>
+  </section>
+
+  <section class="card">
+    <h2>Séances enregistrées</h2>
+    <p id="sessions-empty" class="mute">Aucune séance.</p>
+    <ul id="sessions" class="sessions"></ul>
+  </section>
+</main>
+
+<script src="hr.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
