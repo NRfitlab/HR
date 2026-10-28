@@ -1,7 +1,9 @@
-HR Logger : PWA d'enregistrement FC Polar H10 avec marqueurs
+Protection des données : purge globale, rappel post-export, alerte nom de séance
 
-Web Bluetooth (Heart Rate Service), IndexedDB, graphique canvas,
-marqueurs commentés, export CSV automatique à l'arrêt.
+- Bouton « Tout supprimer » (confirmation par saisie)
+- Avertissement si le nom de séance ne contient aucun chiffre
+- Rappel de déplacer/supprimer le CSV après export
+- *.csv, *.json, *.zip ignorés par git ; README section protection des données
 
 Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01DBFs8VmD3Gy2M8LZbX5EqT

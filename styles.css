@@ -41,6 +41,7 @@ input:focus,select:focus,.btn:focus-visible{outline:2px solid var(--accent);outl
 .btn.marker{background:var(--marker);border-color:var(--marker);color:#1a1400;font-weight:700}
 .btn.marker.flash{animation:flash .35s}
 @keyframes flash{50%{transform:scale(.97);filter:brightness(1.4)}}
+.btn.ghost-danger{color:#ff8a8e;border-color:#5a2a2c}
 .btn.big{padding:16px;font-size:1.1rem}
 kbd{background:#0003;border-radius:4px;padding:0 6px;font-size:.8rem;margin-left:6px}
 #marker-form label{display:block;color:var(--mute);font-size:.85rem;margin-bottom:4px}

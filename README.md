@@ -15,6 +15,13 @@ La liste « Séances enregistrées » permet de revoir une séance et de ré-exp
 ## Format CSV
 Séparateur `;`, UTF-8 avec BOM (ouverture directe dans Excel FR). Colonnes : `elapsed_ms, elapsed, timestamp_iso, hr_bpm, rr_ms (séparés par espace), contact, marqueur`. Le commentaire d'un marqueur est placé sur le premier échantillon qui le suit ; les marqueurs postérieurs au dernier échantillon ont leur propre ligne.
 
+## Protection des données
+- Aucune donnée ne quitte l'ordinateur : pas de serveur, de statistiques ni de ressource externe. Les mesures sont stockées en clair dans le navigateur (IndexedDB) ; chiffrer le disque (BitLocker / FileVault) et verrouiller la session.
+- « Nom de séance » : n'y mettre qu'un code participant (avertissement si aucun chiffre). Garder la table code ↔ identité séparément.
+- Après chaque séance : déplacer le CSV vers un stockage validé, vider Téléchargements, supprimer la séance (bouton *Supprimer*) ; *Tout supprimer* vide la base du navigateur.
+- Ne jamais committer d'export (`*.csv` et `*.json` sont ignorés par git).
+- Données de santé (art. 9 RGPD) : faire valider traitement, AIPD et information des participants par le DPO de l'établissement avant utilisation avec des participants.
+
 ## Déploiement (GitHub Pages)
 ```bash
 git remote add origin git@github.com:<utilisateur>/<depot>.git   # ou l'URL HTTPS
@@ -22,7 +29,7 @@ git push -u origin main
 ```
 Puis sur GitHub : **Settings → Pages → Build and deployment → Source : Deploy from a branch → Branch : `main` / `(root)`**. L'app est servie sur `https://<utilisateur>.github.io/<depot>/` (HTTPS requis par Web Bluetooth). Installation PWA : icône d'installation dans la barre d'adresse de Chrome/Edge.
 
-Après une mise à jour, bumper `CACHE` dans `sw.js` (ex. `hr-logger-v4`) pour forcer le rafraîchissement du cache hors ligne.
+Après une mise à jour, bumper `CACHE` dans `sw.js` (ex. `hr-logger-v5`) pour forcer le rafraîchissement du cache hors ligne.
 
 ## Développement local
 ```bash

@@ -153,6 +153,7 @@ function onHR(e) {
 
 /* ---------- Enregistrement ---------- */
 async function startRec() {
+  if (nameLooksPersonal($('session-name').value) && !confirm('Le nom de séance ne contient aucun chiffre. Est-ce bien un code participant (ex. P017) et non un nom ? Continuer ?')) return;
   const t0 = Date.now();
   const name = $('session-name').value.trim() || `Séance ${fmtDT(t0)}`;
   const id = await run('sessions', 'readwrite', t => os(t, 'sessions').add({ name, startedAt: t0, endedAt: null, device: S.device ? S.device.name : null }));
@@ -176,7 +177,7 @@ async function stopRec() {
   S.view = full; // affiche la séance terminée
   const base = `${slug(full.session.name)}_${stamp(full.session.startedAt)}`;
   download(`${base}.csv`, samplesCSV(full.session, full.samples, full.markers), 'text/csv;charset=utf-8');
-  showBanner(`Séance exportée : ${base}.csv (dossier Téléchargements). Copie conservée dans la liste ci-dessous.`, false);
+  showBanner(`Séance exportée : ${base}.csv (dossier Téléchargements). Déplace-le vers le stockage validé, vide Téléchargements, puis supprime la séance dans la liste ci-dessous.`, false);
   updateTitle(); renderMarkers(); renderSessions(); renderLive(); updateUI(); draw();
 }
 async function recoverInterrupted() {
@@ -280,6 +281,20 @@ async function exportSession(id, kind) {
   if (kind === 'json') download(`${base}.json`, JSON.stringify({ session, samples, markers }, null, 1), 'application/json');
 }
 
+/* ---------- Protection des données ---------- */
+const nameLooksPersonal = n => n.trim() !== '' && !/\d/.test(n); // heuristique : un code participant contient un chiffre
+async function wipeAll() {
+  if (S.rec) { alert('Arrête d\'abord l\'enregistrement.'); return; }
+  if (prompt('Supprimer TOUTES les séances (mesures et marqueurs) de ce navigateur ? Les CSV déjà exportés ne sont pas touchés.\nTape SUPPRIMER pour confirmer.') !== 'SUPPRIMER') return;
+  const db = await dbp, t = db.transaction(['sessions', 'samples', 'markers'], 'readwrite');
+  const done = new Promise((res, rej) => { t.oncomplete = res; t.onerror = () => rej(t.error); t.onabort = () => rej(t.error); });
+  for (const n of ['sessions', 'samples', 'markers']) os(t, n).clear();
+  await done;
+  S.view = null; cancelEditing(); renderMarkers();
+  await renderSessions(); draw();
+  showBanner('Toutes les séances ont été supprimées de ce navigateur.', false);
+}
+
 /* ---------- UI ---------- */
 function setConn(state, text) { const p = $('conn'); p.className = `pill ${state}`; p.textContent = text; if (state === 'off') $('batt').textContent = ''; }
 function showBanner(msg, err) { const b = $('banner'); b.textContent = msg; b.className = err ? 'banner' : 'banner info'; b.hidden = false; }
@@ -297,6 +312,7 @@ function updateUI() {
   $('btn-stop').hidden = !r;
   $('btn-marker').disabled = !r;
   $('session-name').disabled = r;
+  $('btn-wipe').disabled = r;
   document.querySelectorAll('#sessions [data-a="view"]').forEach(b => { b.disabled = r; });
   updateTitle();
 }
@@ -410,6 +426,8 @@ $('btn-disconnect').addEventListener('click', disconnectClick);
 $('btn-start').addEventListener('click', startRec);
 $('btn-stop').addEventListener('click', stopRec);
 $('btn-marker').addEventListener('click', addMarker);
+$('btn-wipe').addEventListener('click', wipeAll);
+$('session-name').addEventListener('input', () => { $('name-hint').hidden = !nameLooksPersonal($('session-name').value); });
 $('window').addEventListener('change', draw);
 $('btn-live').addEventListener('click', () => { S.view = null; cancelEditing(); updateTitle(); renderMarkers(); draw(); });
 $('marker-form').addEventListener('submit', e => { e.preventDefault(); commitEditing(); });

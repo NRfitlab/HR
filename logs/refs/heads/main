@@ -1,1 +1,2 @@
 0000000000000000000000000000000000000000 e98fb47f3f60641ea3f12491891cac94c614bb66 Nicolas Royer <nicolas.royer@univ-nantes.fr> 1793180182 +0100	commit (initial): HR Logger : PWA d'enregistrement FC Polar H10 avec marqueurs
+e98fb47f3f60641ea3f12491891cac94c614bb66 7d7f6c7420efce637cc0d0f7eedf04dc02872816 Nicolas Royer <nicolas.royer@univ-nantes.fr> 1793197248 +0100	commit: Protection des données : purge globale, rappel post-export, alerte nom de séance

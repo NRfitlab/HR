@@ -38,6 +38,7 @@
 
     <section class="card controls">
       <input id="session-name" type="text" placeholder="Nom de la séance (optionnel)" autocomplete="off">
+      <small id="name-hint" class="warn-text" hidden>Aucun chiffre dans ce nom : utilise un code participant (ex. P017), jamais un nom ou un prénom.</small>
       <button id="btn-start" class="btn big ok" disabled>Démarrer l'enregistrement</button>
       <button id="btn-stop" class="btn big danger" hidden>Arrêter l'enregistrement</button>
       <button id="btn-marker" class="btn big marker" disabled>＋ Marqueur <kbd>M</kbd></button>
@@ -74,7 +75,7 @@
   </section>
 
   <section class="card">
-    <h2>Séances enregistrées</h2>
+    <div class="chart-head"><h2>Séances enregistrées</h2><button id="btn-wipe" class="btn ghost-danger" type="button">Tout supprimer</button></div>
     <p id="sessions-empty" class="mute">Aucune séance.</p>
     <ul id="sessions" class="sessions"></ul>
   </section>

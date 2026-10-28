@@ -1,4 +1,4 @@
-const CACHE = 'hr-logger-v3';
+const CACHE = 'hr-logger-v4';
 const ASSETS = ['./', './index.html', './styles.css', './hr.js', './app.js',
   './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png'];
 
